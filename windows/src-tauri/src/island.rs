@@ -425,9 +425,9 @@ fn top_inset_from(monitor_y: i32, work_y: i32) -> i32 {
     if (0..200).contains(&inset) { inset } else { 0 }
 }
 
-pub fn apply_geometry(app: &AppHandle, pref: &str, collapsed: Option<(f64, f64)>) {
+pub fn apply_geometry(app: &AppHandle, screen_pref: &str, island_pos: &str, collapsed: Option<(f64, f64)>) {
     let Some(win) = window(app) else { return };
-    let Some(m) = target_monitor(app, pref) else { return };
+    let Some(m) = target_monitor(app, screen_pref) else { return };
 
     let scale = m.scale_factor();
     let mp = *m.position();
@@ -436,7 +436,13 @@ pub fn apply_geometry(app: &AppHandle, pref: &str, collapsed: Option<(f64, f64)>
     let (lw, lh) = collapsed.map(clamp_collapsed).unwrap_or((PANEL_W, PANEL_H));
     let pw = (lw * scale).round().max(1.0) as u32;
     let ph = (lh * scale).round().max(1.0) as u32;
-    let x = mp.x + (ms.width as i32 - pw as i32) / 2;
+    let gap = (16.0 * scale).round() as i32; // 16px gap from the edge
+    
+    let x = match island_pos {
+        "top-left" => mp.x + gap,
+        "top-right" => mp.x + ms.width as i32 - pw as i32 - gap,
+        _ => mp.x + (ms.width as i32 - pw as i32) / 2,
+    };
     let y = mp.y + top_inset(&m);
 
     // GTK never sizes a non-resizable window below its natural size (200 px
