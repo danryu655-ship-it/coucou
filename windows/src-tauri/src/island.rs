@@ -436,7 +436,7 @@ pub fn apply_geometry(app: &AppHandle, screen_pref: &str, island_pos: &str, coll
     let (lw, lh) = collapsed.map(clamp_collapsed).unwrap_or((PANEL_W, PANEL_H));
     let pw = (lw * scale).round().max(1.0) as u32;
     let ph = (lh * scale).round().max(1.0) as u32;
-    let gap = (16.0 * scale).round() as i32; // 16px gap from the edge
+    let gap = 0; // Flush to edge
     let h_gap = 0; // Flush to edge
     
     let x = match island_pos {
@@ -450,7 +450,7 @@ pub fn apply_geometry(app: &AppHandle, screen_pref: &str, island_pos: &str, coll
             let wa = m.work_area();
             wa.position.y + wa.size.height as i32 - ph as i32 - gap
         },
-        "left" | "right" => mp.y + (ms.height as i32 - ph as i32) / 2,
+        "left" | "right" => mp.y + ms.height as i32 - ph as i32 - gap,
         _ => mp.y + top_inset(&m), // Default to top
     };
 
