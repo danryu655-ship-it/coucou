@@ -108,7 +108,7 @@ pub struct Settings {
     pub phone_relay_url: String,
     /// The date and time in the middle of the compact island. Off by default.
     pub show_clock: bool,
-    /// Position of the island on the screen: "top", "top-left", "top-right".
+    /// Position of the island on the screen: "top", "top-left", "top-right", "bottom", "bottom-left", "bottom-right", "left", "right".
     pub island_position: String,
     /// What the closed island shows at the top of the screen, where the Mac
     /// has its notch: "mochi" (the Mac's island on a screen without a notch),

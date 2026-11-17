@@ -439,11 +439,19 @@ pub fn apply_geometry(app: &AppHandle, screen_pref: &str, island_pos: &str, coll
     let gap = (16.0 * scale).round() as i32; // 16px gap from the edge
     
     let x = match island_pos {
-        "top-left" => mp.x + gap,
-        "top-right" => mp.x + ms.width as i32 - pw as i32 - gap,
-        _ => mp.x + (ms.width as i32 - pw as i32) / 2,
+        "top-left" | "bottom-left" | "left" => mp.x + gap,
+        "top-right" | "bottom-right" | "right" => mp.x + ms.width as i32 - pw as i32 - gap,
+        _ => mp.x + (ms.width as i32 - pw as i32) / 2, // Centered (top, bottom)
     };
-    let y = mp.y + top_inset(&m);
+    let y = match island_pos {
+        "top" | "top-left" | "top-right" => mp.y + top_inset(&m),
+        "bottom" | "bottom-left" | "bottom-right" => {
+            let wa = m.work_area();
+            wa.position.y + wa.size.height as i32 - ph as i32 - gap
+        },
+        "left" | "right" => mp.y + (ms.height as i32 - ph as i32) / 2,
+        _ => mp.y + top_inset(&m), // Default to top
+    };
 
     // GTK never sizes a non-resizable window below its natural size (200 px
     // here), so on Linux the 6 px wake strip would stay a 200 px block. tao

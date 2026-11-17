@@ -1067,6 +1067,11 @@ function generalSection(): HTMLElement {
     h("option", { value: "top", text: t("Top") }),
     h("option", { value: "top-left", text: t("Top Left") }),
     h("option", { value: "top-right", text: t("Top Right") }),
+    h("option", { value: "bottom", text: t("Bottom") }),
+    h("option", { value: "bottom-left", text: t("Bottom Left") }),
+    h("option", { value: "bottom-right", text: t("Bottom Right") }),
+    h("option", { value: "left", text: t("Left") }),
+    h("option", { value: "right", text: t("Right") }),
   );
   islandPos.value = settings.islandPosition;
   islandPos.addEventListener("change", () => {
