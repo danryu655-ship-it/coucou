@@ -437,10 +437,11 @@ pub fn apply_geometry(app: &AppHandle, screen_pref: &str, island_pos: &str, coll
     let pw = (lw * scale).round().max(1.0) as u32;
     let ph = (lh * scale).round().max(1.0) as u32;
     let gap = (16.0 * scale).round() as i32; // 16px gap from the edge
+    let h_gap = 0; // Flush to edge
     
     let x = match island_pos {
-        "top-left" | "bottom-left" | "left" => mp.x + gap,
-        "top-right" | "bottom-right" | "right" => mp.x + ms.width as i32 - pw as i32 - gap,
+        "top-left" | "bottom-left" | "left" => mp.x + h_gap,
+        "top-right" | "bottom-right" | "right" => mp.x + ms.width as i32 - pw as i32 - h_gap,
         _ => mp.x + (ms.width as i32 - pw as i32) / 2, // Centered (top, bottom)
     };
     let y = match island_pos {
